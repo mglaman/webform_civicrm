@@ -107,6 +107,7 @@ class CivicrmOptions extends WebformElementBase {
       ],
     ];
 
+    // @todo Saving this ruins Boolean values.
     $form['options']['options'] = [
       '#type' => 'civicrm_select_options',
       '#live_options' => $element_properties['civicrm_live_options'],
@@ -123,7 +124,9 @@ class CivicrmOptions extends WebformElementBase {
   public function getConfigurationFormProperties(array &$form, FormStateInterface $form_state) {
     $properties = parent::getConfigurationFormProperties($form, $form_state);
     // Get additional properties off of the options element.
+    // @todo check Boolean
     $select_options = $form['properties']['options']['options'];
+    // @todo review default_option
     $properties['#default_option'] = $select_options['#default_option'];
     $properties['#default_value'] = $select_options['#default_option'];
     return $properties;
@@ -162,7 +165,12 @@ class CivicrmOptions extends WebformElementBase {
 
     $element['#type'] = 'select';
     if (!$as_list) {
-      $element['#type'] = $is_multiple ? 'checkboxes' : 'radios';
+      if (isset($element['#data_type']) && $element['#data_type'] === 'Boolean') {
+        $element['#type'] = 'civicrm_boolean';
+      }
+      else {
+        $element['#type'] = $is_multiple ? 'checkboxes' : 'radios';
+      }
     }
     else if ($is_multiple) {
       $element['#multiple'] = TRUE;
