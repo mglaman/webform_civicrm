@@ -33,7 +33,7 @@ jobs:
             php-version: 7.2
             extensions: dom, curl, libxml, mbstring, zip, pdo, mysql, pdo_mysql, bcmath, soap, intl, gd, exif, iconv
             coverage: none
-            tools: composer:v1
+            tools: composer:v2
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - uses: nanasess/setup-chromedriver@master
